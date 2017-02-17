@@ -1,0 +1,277 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.scijava</groupId>
+    <artifactId>pom-scijava</artifactId>
+    <version>12.0.0</version>
+    <relativePath/>
+  </parent>
+  <!-- Project's coordinates -->
+  <groupId>uk.ac.warwick.wsbc</groupId>
+  <artifactId>pom-quimp-root</artifactId>
+  <packaging>pom</packaging>
+  <version>17.02.05-SNAPSHOT</version>
+  <!-- Name and licencing and other project informations -->
+  <name>QuimP Root POM</name>
+  <url>www.warwick.ac.uk/quimp</url>
+  <description>This POM provides a parent that QuimP and its plugins can be derrived from.</description>
+  <inceptionYear>2017</inceptionYear>
+  <!-- Root of URL for documentation. MUST have / at end -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <license.licenseName>QuimP License</license.licenseName>
+    <license.copyrightOwners>University of Warwick</license.copyrightOwners>
+  </properties>
+  <scm>
+    <connection>scm:git:https://github.com/CellDynamics/pom-quimp-root.git</connection>
+    <developerConnection>scm:git:https://github.com/CellDynamics/pom-quimp-root.git</developerConnection>
+    <url>https://github.com/CellDynamics/pom-quimp-root/</url>
+    <tag>HEAD</tag>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/CellDynamics/pom-quimp-root/issues/</url>
+  </issueManagement>
+  <licenses>
+    <license>
+      <!--
+      NB: We override these properties to make the enforcer happy.
+      You will need to override them in your POM, too... to valid values.
+      -->
+      <name>N/A</name>
+      <url>N/A</url>
+    </license>
+  </licenses>
+  <organization>
+    <name>Department of Computer Science, Warwick University</name>
+    <url>http://www2.warwick.ac.uk/fac/sci/dcs/</url>
+  </organization>
+  <developers>
+    <developer>
+      <id>pbaniukiewicz</id>
+      <name>Piotr Baniukiewicz</name>
+      <email>p.baniukiewicz@warwick.ac.uk</email>
+      <organization>University of Warwick</organization>
+      <roles>
+        <role>lead</role>
+        <role>developer</role>
+        <role>support</role>
+        <role>reviewer</role>
+        <role>maintainer</role>
+      </roles>
+      <timezone>London</timezone>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Piotr Baniukiewicz</name>
+      <email>p.baniukiewicz@warwick.ac.uk</email>
+      <organization>University of Warwick</organization>
+      <roles>
+        <role>developer</role>
+      </roles>
+      <timezone>London</timezone>
+    </contributor>
+  </contributors>
+  <mailingLists>
+    <mailingList>
+      <name>N/A</name>
+      <archive>N/A</archive>
+    </mailingList>
+  </mailingLists>
+  <ciManagement>
+    <system>None</system>
+  </ciManagement>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>2.6.8</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>pl.pragmatists</groupId>
+        <artifactId>JUnitParams</artifactId>
+        <version>1.0.6</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <!-- not in pom-scijava -->
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <!-- http://www.javacodegeeks.com/2012/10/maven-build-number-plugin-sample-usage.html -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>false</doCheck>
+          <doUpdate>false</doUpdate>
+          <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
+          <items>
+            <item>timestamp</item>
+          </items>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+            <manifestEntries>
+              <Implementation-Build>${buildNumber}</Implementation-Build>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!-- https://books.sonatype.com/mvnex-book/reference/customizing-sect-creating-simple-weather.html -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.6.201602180812</version>
+        <configuration>
+          <dataFile>${jaCoCoExecutionDataFile}</dataFile>
+        </configuration>
+        <executions>
+          <execution>
+            <id>pre-unit-test</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+              <propertyName>surefireArgLine</propertyName>
+            </configuration>
+          </execution>
+          <execution>
+            <id>post-unit-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <!-- Sets the path to the file which contains the execution data. -->
+              <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+              <!-- Sets the output directory for the code coverage report. -->
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <!-- https://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/ -->
+        <configuration>
+          <!-- Sets the VM argument line used when unit tests are run. -->
+          <argLine>${surefireArgLine}</argLine>
+          <!-- Skips unit tests if the value of skip.unit.tests property is true -->
+          <skipTests>${skip.unit.tests}</skipTests>
+          <!-- Excludes integration tests when unit tests are run. -->
+          <excludes>
+            <exclude>**/IT*.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles/>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.17</version>
+        <configuration>
+          <configLocation>src/test/resources/quimp_google_checks.xml</configLocation>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.9</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>3.0.3</version>
+        <configuration>
+          <findbugsXmlOutput>true</findbugsXmlOutput>
+          <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+          <xmlOutput>true</xmlOutput>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.6</version>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.6.201602180812</version>
+        <configuration>
+          <!-- Sets the path to the file which contains the execution data. -->
+          <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.12</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>changes-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.4</version>
+        <configuration>
+          <show>private</show>
+          <quiet>false</quiet>
+          <additionalparam>-Xdoclint:none</additionalparam>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
