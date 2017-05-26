@@ -1,4 +1,5 @@
 doc/
+target/
 
 .directory
 .DS_Store
