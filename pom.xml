@@ -7,10 +7,10 @@
     <relativePath/>
   </parent>
   <!-- Project's coordinates -->
-  <groupId>uk.ac.warwick.wsbc</groupId>
+  <groupId>com.github.celldynamics</groupId>
   <artifactId>pom-quimp-root</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version>
+  <version>16.1.0</version>
   <!-- Name and licencing and other project informations -->
   <name>QuimP Root POM</name>
   <url>www.warwick.ac.uk/quimp</url>
